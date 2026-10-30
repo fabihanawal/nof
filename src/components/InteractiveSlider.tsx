@@ -9,7 +9,6 @@ import {
   ArrowRight,
   Sparkles,
   Maximize2,
-  Sliders,
   ShieldCheck,
   Award,
   BookOpen,
@@ -192,15 +191,6 @@ export const InteractiveSlider: React.FC = () => {
                     >
                       <span>{slide.buttonText || 'বিস্তারিত জানুন'}</span>
                       <ArrowRight className="w-4 h-4" />
-                    </button>
-
-                    <button
-                      onClick={() => setCurrentPage('admin')}
-                      className="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-emerald-100 border border-emerald-400/30 text-xs font-semibold backdrop-blur-sm transition flex items-center gap-1.5 opacity-80 hover:opacity-100"
-                      title="এডমিন প্যানেলে স্লাইড পরিবর্তন করুন"
-                    >
-                      <Sliders className="w-3.5 h-3.5 text-amber-300" />
-                      <span className="hidden sm:inline">স্লাইড এডিট করুন</span>
                     </button>
                   </div>
                 </div>

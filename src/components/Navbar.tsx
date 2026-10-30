@@ -5,7 +5,6 @@ import {
   Menu,
   X,
   UserPlus,
-  ShieldAlert,
   Phone,
   Mail,
   Heart,
@@ -73,19 +72,6 @@ export const Navbar: React.FC = () => {
             >
               <Heart className="w-3 h-3 fill-slate-950" />
               অনুদান
-            </button>
-
-            <button
-              onClick={() => handleNavClick('admin')}
-              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-semibold transition ${
-                currentPage === 'admin'
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-emerald-800/80 hover:bg-emerald-700 text-emerald-200'
-              }`}
-              id="topbar-admin-btn"
-            >
-              <ShieldAlert className="w-3 h-3" />
-              এডমিন CMS
             </button>
           </div>
         </div>
@@ -217,13 +203,7 @@ export const Navbar: React.FC = () => {
 
           <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
             <span>হটলাইন: {settings.contactPhone}</span>
-            <button
-              onClick={() => handleNavClick('admin')}
-              className="text-emerald-700 font-bold flex items-center gap-1"
-            >
-              <ShieldAlert className="w-3.5 h-3.5" />
-              এডমিন CMS প্রবেশ
-            </button>
+            <span className="text-emerald-800 font-semibold">{settings.contactEmail}</span>
           </div>
         </div>
       )}

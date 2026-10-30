@@ -18,6 +18,7 @@ import { GalleryPage } from './pages/GalleryPage';
 import { JoinPage } from './pages/JoinPage';
 import { ContactPage } from './pages/ContactPage';
 import { AdminCMS } from './components/AdminCMS';
+import { AdminLoginModal } from './components/AdminLoginModal';
 
 const MainLayout: React.FC = () => {
   const { currentPage } = useApp();
@@ -75,6 +76,7 @@ const MainLayout: React.FC = () => {
       <DonationModal />
       <NewsModal />
       <ImageLightbox />
+      <AdminLoginModal />
     </div>
   );
 };

@@ -18,7 +18,6 @@ import {
   GraduationCap,
   Tv,
   Laptop,
-  Sliders,
 } from 'lucide-react';
 import { ProjectItem } from '../types';
 import { InteractiveSlider } from '../components/InteractiveSlider';
@@ -174,30 +173,17 @@ export const HomePage: React.FC = () => {
       {/* 2. INTERACTIVE 5-IMAGE SLIDESHOW SHOWCASE */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-10 relative z-20">
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 bg-white/95 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-emerald-100 shadow-sm">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold mb-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                <span>ইন্টারাক্টিভ ফিচার স্লাইডশো</span>
-              </div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900">
-                নারী অধিকার ফাউন্ডেশন: ৫টি মূল স্তম্ভ ও কর্মপ্রয়াস
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
-                নিচের স্লাইডশোতে মাউস রেখে বা টাচ করে প্রতিটি উদ্যোগের বিস্তারিত দেখুন এবং সক্রিয় পদক্ষেপে অংশ নিন
-              </p>
+          <div className="bg-white/95 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-emerald-100 shadow-sm">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold mb-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+              <span>ইন্টারাক্টিভ ফিচার স্লাইডশো</span>
             </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setCurrentPage('admin')}
-                className="px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200 transition flex items-center gap-1.5 shadow-sm"
-                title="এডমিন প্যানেলে স্লাইড পরিবর্তন বা নতুন ছবি আপলোড করুন"
-              >
-                <Sliders className="w-3.5 h-3.5 text-emerald-700" />
-                <span>স্লাইডশো এডিট / আপলোড</span>
-              </button>
-            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900">
+              নারী অধিকার ফাউন্ডেশন: ৫টি মূল স্তম্ভ ও কর্মপ্রয়াস
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+              নিচের স্লাইডশোতে মাউস রেখে বা টাচ করে প্রতিটি উদ্যোগের বিস্তারিত দেখুন এবং সক্রিয় পদক্ষেপে অংশ নিন
+            </p>
           </div>
 
           {/* Interactive Slideshow Component */}

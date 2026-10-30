@@ -30,6 +30,11 @@ import {
   ArrowUp,
   ArrowDown,
   Sparkles,
+  Lock,
+  User,
+  EyeOff,
+  AlertCircle,
+  ArrowLeft,
 } from 'lucide-react';
 import {
   NewsItem,
@@ -76,7 +81,29 @@ export const AdminCMS: React.FC = () => {
     setCurrentPage,
     isLoading,
     refreshFromFirebase,
+    isAdminAuthenticated,
+    loginAdmin,
+    logoutAdmin,
   } = useApp();
+
+  const [gateUsername, setGateUsername] = useState('');
+  const [gatePassword, setGatePassword] = useState('');
+  const [gateShowPassword, setGateShowPassword] = useState(false);
+  const [gateError, setGateError] = useState<string | null>(null);
+
+  const handleGateLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setGateError(null);
+    if (!gateUsername.trim() || !gatePassword) {
+      setGateError('অনুগ্রহ করে ইউজারনেম এবং পাসওয়ার্ড উভয়ই প্রদান করুন।');
+      return;
+    }
+    const success = loginAdmin(gateUsername, gatePassword);
+    if (!success) {
+      setGateError('ভুল ইউজারনেম বা পাসওয়ার্ড! সঠিক তথ্য দিয়ে পুনরায় চেষ্টা করুন।');
+      setGatePassword('');
+    }
+  };
 
   type AdminTab =
     | 'dashboard'
@@ -462,6 +489,98 @@ export const AdminCMS: React.FC = () => {
     return matchesStatus && matchesSearch;
   });
 
+  if (!isAdminAuthenticated) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden">
+          <div className="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 p-6 text-white text-center">
+            <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-white/10 border border-emerald-400/30 flex items-center justify-center text-amber-300 shadow-inner">
+              <ShieldCheck className="w-8 h-8" />
+            </div>
+            <span className="inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-amber-400 text-slate-950 mb-1.5">
+              প্রশাসনিক এক্সেস
+            </span>
+            <h2 className="text-xl font-bold font-bengali">নারী অধিকার ফাউন্ডেশন</h2>
+            <p className="text-xs text-emerald-200 mt-1">অ্যাডমিন কন্ট্রোল প্যানেলে প্রবেশের জন্য লগইন করুন</p>
+          </div>
+
+          <form onSubmit={handleGateLogin} className="p-6 space-y-4">
+            {gateError && (
+              <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
+                <span>{gateError}</span>
+              </div>
+            )}
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-bengali">
+                ইউজারনেম (Username)
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <User className="w-4 h-4" />
+                </div>
+                <input
+                  type="text"
+                  value={gateUsername}
+                  onChange={(e) => setGateUsername(e.target.value)}
+                  placeholder="admin"
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-slate-900"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-bengali">
+                পাসওয়ার্ড (Password)
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Lock className="w-4 h-4" />
+                </div>
+                <input
+                  type={gateShowPassword ? 'text' : 'password'}
+                  value={gatePassword}
+                  onChange={(e) => setGatePassword(e.target.value)}
+                  placeholder="••••••••••"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-slate-900"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setGateShowPassword(!gateShowPassword)}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600"
+                >
+                  {gateShowPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            <div className="pt-2 flex flex-col gap-2">
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2"
+              >
+                <ShieldCheck className="w-4 h-4" />
+                <span>লগইন করুন</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setCurrentPage('home')}
+                className="w-full py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition flex items-center justify-center gap-1.5"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>মূল ওয়েবসাইটে ফিরে যান</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -486,7 +605,7 @@ export const AdminCMS: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <button
               onClick={() => refreshFromFirebase()}
               disabled={isLoading}
@@ -503,6 +622,18 @@ export const AdminCMS: React.FC = () => {
             >
               <Eye className="w-4 h-4" />
               <span>ওয়েবসাইট দেখুন</span>
+            </button>
+
+            <button
+              onClick={() => {
+                logoutAdmin();
+                setCurrentPage('home');
+              }}
+              className="px-3.5 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white text-xs font-semibold flex items-center gap-1.5 transition shadow-sm"
+              title="এডমিন লগআউট"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>লগআউট</span>
             </button>
           </div>
         </div>

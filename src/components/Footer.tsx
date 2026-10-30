@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import {
   BookOpen,
@@ -7,7 +7,6 @@ import {
   Mail,
   Heart,
   ChevronRight,
-  ShieldCheck,
   Facebook,
   Youtube,
   Send,
@@ -16,7 +15,26 @@ import {
 import { PageView } from '../types';
 
 export const Footer: React.FC = () => {
-  const { setCurrentPage, settings, setShowDonationModal } = useApp();
+  const { setCurrentPage, settings, setShowDonationModal, setShowAdminLoginModal } = useApp();
+
+  const clickCountRef = useRef(0);
+  const clickTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleSecretAdminTrigger = () => {
+    clickCountRef.current += 1;
+    if (clickTimerRef.current) {
+      clearTimeout(clickTimerRef.current);
+    }
+
+    if (clickCountRef.current >= 3) {
+      clickCountRef.current = 0;
+      setShowAdminLoginModal(true);
+    } else {
+      clickTimerRef.current = setTimeout(() => {
+        clickCountRef.current = 0;
+      }, 1500);
+    }
+  };
 
   const navigateTo = (page: PageView) => {
     setCurrentPage(page);
@@ -41,7 +59,11 @@ export const Footer: React.FC = () => {
                 <h3 className="text-xl font-bold text-white tracking-wide">
                   নারী অধিকার ফাউন্ডেশন
                 </h3>
-                <p className="text-xs text-emerald-300">
+                <p
+                  onClick={handleSecretAdminTrigger}
+                  className="text-xs text-emerald-300 cursor-pointer select-none transition hover:text-white"
+                  title="Nari Odhikar Foundation"
+                >
                   Nari Odhikar Foundation (NOF)
                 </p>
               </div>
@@ -233,22 +255,23 @@ export const Footer: React.FC = () => {
           </p>
         </div>
 
-        {/* Bottom copyright & Admin portal link */}
+        {/* Bottom copyright */}
         <div className="mt-8 pt-6 border-t border-emerald-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-emerald-400">
-          <p>
-            © {new Date().getFullYear()} নারী অধিকার ফাউন্ডেশন (Nari Odhikar Foundation)। সর্বস্বত্ব সংরক্ষিত।
+          <p className="select-none text-center sm:text-left">
+            © {new Date().getFullYear()} নারী অধিকার ফাউন্ডেশন (
+            <span
+              onClick={handleSecretAdminTrigger}
+              className="cursor-pointer text-emerald-300 hover:text-white transition"
+              title="Nari Odhikar Foundation"
+            >
+              Nari Odhikar Foundation
+            </span>
+            )। সর্বস্বত্ব সংরক্ষিত।
           </p>
 
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigateTo('admin')}
-              className="inline-flex items-center gap-1.5 text-emerald-300 hover:text-white hover:underline transition"
-              id="footer-admin-link"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              এডমিন সিএমএস পোর্টাল
-            </button>
-            <span>•</span>
+          <div className="flex items-center gap-3">
+            <span className="text-emerald-500 hidden sm:inline">কেন্দ্রীয় দপ্তর: {settings.officeAddress}</span>
+            <span className="hidden sm:inline">•</span>
             <button
               onClick={() => navigateTo('contact')}
               className="text-emerald-300 hover:text-white hover:underline transition"

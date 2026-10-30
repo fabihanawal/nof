@@ -89,8 +89,10 @@ interface AppContextType {
 
   // Admin
   isAdminAuthenticated: boolean;
-  loginAdmin: (password: string) => boolean;
+  loginAdmin: (username: string, password: string) => boolean;
   logoutAdmin: () => void;
+  showAdminLoginModal: boolean;
+  setShowAdminLoginModal: (show: boolean) => void;
   isLoading: boolean;
   refreshFromFirebase: () => Promise<void>;
 }
@@ -116,7 +118,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [members, setMembers] = useState<MemberApplication[]>(SAMPLE_MEMBERS);
   const [slides, setSlides] = useState<SlideItem[]>(INITIAL_SLIDES);
 
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(true); // Default accessible for CMS demonstration
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(false);
+  const [showAdminLoginModal, setShowAdminLoginModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Load from Firebase
@@ -479,14 +482,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // Admin Auth
-  const loginAdmin = (password: string) => {
-    if (
-      password === 'nari1234' ||
-      password === 'admin' ||
-      password === 'gio1234' ||
-      password === ''
-    ) {
+  const loginAdmin = (username: string, password: string) => {
+    const trimmedUser = username.trim().toLowerCase();
+    if (trimmedUser === 'admin' && password === 'admin12345n') {
       setIsAdminAuthenticated(true);
+      setShowAdminLoginModal(false);
       return true;
     }
     return false;
@@ -544,6 +544,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isAdminAuthenticated,
         loginAdmin,
         logoutAdmin,
+        showAdminLoginModal,
+        setShowAdminLoginModal,
         isLoading,
         refreshFromFirebase,
       }}
