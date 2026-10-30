@@ -26,13 +26,24 @@ import {
   INITIAL_SLIDES,
 } from './data/initialData';
 
+// Initialize Firebase Configuration (Supports both Vercel Environment Variables & local config file)
+const effectiveFirebaseConfig = {
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || firebaseConfig.projectId,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || firebaseConfig.appId,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || firebaseConfig.apiKey,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || firebaseConfig.authDomain,
+  firestoreDatabaseId: import.meta.env.VITE_FIREBASE_DATABASE_ID || firebaseConfig.firestoreDatabaseId,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || firebaseConfig.storageBucket,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || firebaseConfig.messagingSenderId,
+};
+
 // Initialize Firebase App
-export const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+export const app = getApps().length > 0 ? getApp() : initializeApp(effectiveFirebaseConfig);
 
 // Initialize Firestore with custom database ID if available
 export const db: Firestore =
-  firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== '(default)'
-    ? getFirestore(app, firebaseConfig.firestoreDatabaseId)
+  effectiveFirebaseConfig.firestoreDatabaseId && effectiveFirebaseConfig.firestoreDatabaseId !== '(default)'
+    ? getFirestore(app, effectiveFirebaseConfig.firestoreDatabaseId)
     : getFirestore(app);
 
 // Helper collection names matching user prompt
