@@ -1,0 +1,6 @@
+{
+  "name": "Girls Islamic Organisation Bangladesh (GIO BD)",
+  "description": "গার্লস ইসলামিক অর্গানাইজেশন বাংলাদেশ (GIO BD) এর অফিসিয়াল পোর্টাল — জ্ঞান, চরিত্র, নেতৃত্ব ও সেবায় নিবেদিত জাতীয় সংগঠন।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
